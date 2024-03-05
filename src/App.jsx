@@ -1,12 +1,15 @@
 import './App.css'
-import { Game } from './pages/Game'
+import { Box } from '@chakra-ui/react'
+ import Game from './pages/Game'
 
 function App() {
 
   return (
     <>
-      <h1>Chess App</h1>
-      <Game></Game>
+      <Box bg='tomato' w='100%' h='100%' p={4} color='white'>
+        Chess App
+        <Game></Game>
+      </Box>
     </>
   )
 }
