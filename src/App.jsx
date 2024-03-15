@@ -9,7 +9,7 @@ function App() {
     <>
       <Box bgGradient="linear(to-t, #fff2cc, #f5e6d1)" w='100%' h='calc(100vh)'>
         <Header></Header>
-        
+        <Game></Game>
       </Box>
       
     </>
