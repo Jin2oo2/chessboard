@@ -18,7 +18,8 @@
     "framer-motion": "^11.0.8",
     "react": "^18.2.0",
     "react-chessboard": "^4.5.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-password-checklist": "^1.5.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
