@@ -7,10 +7,18 @@ import {
     FormHelperText,
 } from '@chakra-ui/react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
+import PasswordChecklist from "react-password-checklist"
 
 export default function Signup() {
     const [show, setShow] = useState(false)
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const [canSubmit, setCanValid] = useState(false)
     const handleClick = () => setShow(!show)
+
+    function handleDisabled(isPasswordValid) {
+        setCanValid(isPasswordValid && username.length > 0)
+    }
 
   return (
     <>
@@ -21,16 +29,24 @@ export default function Signup() {
                 </Box >
                 <Box m={5}>
                     <form action="" >
-                        <Input mb={4} variant='flushed' placeholder='Enter username'/>
+                        <Input mb={4} variant='flushed' placeholder='Enter username' onChange={(e) => setUsername(e.target.value)}/>
                            
                         <InputGroup mb={4}>
-                            <Input variant='flushed' placeholder='Enter password' type={show ? 'text' : 'password'}/>
+                            <Input variant='flushed' placeholder='Enter password' type={show ? 'text' : 'password'} onChange={(e) => setPassword(e.target.value)}/>
                             <InputRightElement>  
                                 {show ? <ViewIcon onClick={handleClick} /> : <ViewOffIcon onClick={handleClick} />}   
                             </InputRightElement>
                         </InputGroup>
 
-                        <Button type='submit' w={300} colorScheme='cyan'>Sign Up</Button>
+                        <PasswordChecklist
+                            rules={["minLength","specialChar","number","capital"]}
+                            value={password}
+                            minLength={8}
+                            onChange={(isValid) => handleDisabled(isValid)}
+                            
+                        />
+
+                        <Box as='button' type='submit' mt={4} p={2} w={300} bg={!canSubmit ? 'red' : 'cyan'} color='black' borderRadius='md' disabled={!canSubmit}>Sign Up</Box>
                     </form>
 
                     <Text mt={3}>Already a member? Login</Text>

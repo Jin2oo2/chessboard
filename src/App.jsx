@@ -13,6 +13,7 @@ function App() {
         <Header />
         {/* <Game /> */}
         <Signup />
+        <Login />
         
       </Box>
       
