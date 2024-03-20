@@ -1,10 +1,14 @@
 import { Chessboard } from "react-chessboard"
 import { Chess } from "chess.js"
 import { useState, useEffect } from "react"
+import { Box, Button, Heading, Text, Divider } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 
 function Game() {
   const [game, setGame] = useState(new Chess())
   const [playerMoved, setPlayerMoved] = useState(false);
+
+  console.log(game)
 
   function onBegin(piece, sourceSquare) {
     if (game.isGameOver() || game.isCheckmate() || game.isDraw()) {
@@ -57,21 +61,44 @@ function Game() {
     setPlayerMoved(false)
   }, [game, playerMoved]);
 
+  function reset() {
+    setGame(new Chess())
+  }
+
   return (
     <>
-      <h1>This is chess board</h1>
+      {/* <h1>This is chess board</h1>
       <p>Current FEN is {game.fen()}</p>
       <p>{game.turn() === 'b' ? 'BLACK' : 'WHITE'} turn</p>
-      <p>{game.isGameOver() === true ? 'Game Over' : 'Game Ongoing'}</p>
-      <Chessboard
-        boardWidth="560"
-        position={game.fen()} 
-        onPieceDrop={onDrop} 
-        onPieceDragBegin={onBegin} 
-        allowDragOutsideBoard={true} 
-        isDraggablePiece={isDraggablePiece}
-        animationDuration={playerMoved ? null : 300}
-      />
+      <p>{game.isGameOver() === true ? 'Game Over' : 'Game Ongoing'}</p> */}
+      <Box display='flex' justifyContent='space-around' alignItems='center'>
+        <Box>
+          <Chessboard
+            boardWidth="560"
+            position={game.fen()} 
+            onPieceDrop={onDrop} 
+            onPieceDragBegin={onBegin} 
+            allowDragOutsideBoard={true} 
+            isDraggablePiece={isDraggablePiece}
+            animationDuration={playerMoved ? null : 300}
+          />
+        </Box>
+
+        <Card w={400}>
+          <CardHeader>
+            <Heading size='lg'>Game Data</Heading>
+          </CardHeader>
+          <CardBody>
+            <Text fontSize='lg'>{game.turn() === 'b' ? 'BLACK' : 'WHITE'} PLAYING</Text>
+            <Text fontSize='lg'>Difficulty: Random</Text>
+          </CardBody>
+          <Divider />
+          <CardFooter>
+            <Button colorScheme='red' onClick={reset}>Reset</Button>
+          </CardFooter>
+        </Card>
+      </Box>
+      
     </>
   )
 }
