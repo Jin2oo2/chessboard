@@ -70,6 +70,7 @@ function Game() {
         onPieceDragBegin={onBegin} 
         allowDragOutsideBoard={true} 
         isDraggablePiece={isDraggablePiece}
+        animationDuration={playerMoved ? null : 300}
       />
     </>
   )
