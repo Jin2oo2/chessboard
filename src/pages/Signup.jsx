@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Box, Button, Center, Heading, Text, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import {
     FormControl,
@@ -51,7 +52,7 @@ export default function Signup() {
 
                         </form>
 
-                        <Text mt={3}>Already a member? Login</Text>
+                        <Text mt={3}>Already a member? <Link to='/login'>Login</Link></Text>
                     </Box>
                 </div>
                 
