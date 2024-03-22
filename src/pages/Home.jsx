@@ -37,7 +37,7 @@ export default function Home() {
                                 <Button onClick={() => handleLevel('medium')} variant={level === 'medium' ? 'solid' : 'outline'} colorScheme='yellow' w={20}>Medium</Button>
                                 <Button onClick={() => handleLevel('hard')} variant={level === 'hard' ? 'solid' : 'outline'} colorScheme='red' w={20}>Hard</Button>
                             </Stack>
-                            <Button colorScheme='messenger' size='lg' mt={6}>Start Game</Button>
+                            <Button isDisabled={level ? false: true} colorScheme='messenger' size='lg' mt={6}>Start Game</Button>
                         </Box>
                         
                     </Box>

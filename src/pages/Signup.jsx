@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, Center, Heading, Text, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
+import { Box, Button, Center, Heading, Text, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import {
     FormControl,
     FormLabel,
@@ -47,7 +47,8 @@ export default function Signup() {
                                 
                             />
 
-                            <Box as='button' type='submit' mt={4} p={2} w={300} bg={!canSubmit ? 'red' : 'cyan'} color='black' borderRadius='md' disabled={!canSubmit}>Sign Up</Box>
+                            <Button type='submit' colorScheme='cyan' mt={4} p={2} w={300} isDisabled={!canSubmit} >Sign up</Button>
+
                         </form>
 
                         <Text mt={3}>Already a member? Login</Text>
