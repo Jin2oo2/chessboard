@@ -9,6 +9,10 @@ export default function Home() {
         setLevel(level)
     }
 
+    function saveLevel() {
+        localStorage.setItem('level', level)
+    }
+
     return (
         <>
             <Box display='flex' justifyContent='center' h={600} bg=''>
@@ -39,7 +43,7 @@ export default function Home() {
                                 <Button onClick={() => handleLevel('hard')} variant={level === 'hard' ? 'solid' : 'outline'} colorScheme='red' w={20}>Hard</Button>
                             </Stack>
                             <Link to='/chessgame'>
-                                <Button isDisabled={level ? false: true} colorScheme='messenger' size='lg' mt={6}>Start Game</Button>
+                                <Button isDisabled={level ? false: true} onClick={saveLevel} colorScheme='messenger' size='lg' mt={6}>Start Game</Button>
                             </Link> 
                         </Box>
                         

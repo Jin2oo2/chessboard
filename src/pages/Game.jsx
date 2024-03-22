@@ -7,6 +7,8 @@ import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 function Game() {
   const [game, setGame] = useState(new Chess())
   const [playerMoved, setPlayerMoved] = useState(false);
+  const level = localStorage.getItem('level')
+  console.log(`Game level: ${level}`)
 
   console.log(game)
 
@@ -67,10 +69,6 @@ function Game() {
 
   return (
     <>
-      {/* <h1>This is chess board</h1>
-      <p>Current FEN is {game.fen()}</p>
-      <p>{game.turn() === 'b' ? 'BLACK' : 'WHITE'} turn</p>
-      <p>{game.isGameOver() === true ? 'Game Over' : 'Game Ongoing'}</p> */}
       <Box display='flex' justifyContent='space-around' alignItems='center'>
         <Box>
           <Chessboard
@@ -90,7 +88,7 @@ function Game() {
           </CardHeader>
           <CardBody>
             <Text fontSize='lg'>{game.turn() === 'b' ? 'BLACK' : 'WHITE'} PLAYING</Text>
-            <Text fontSize='lg'>Difficulty: Random</Text>
+            <Text fontSize='lg'>Difficulty: {level}</Text>
             <Text fontSize='lg'>State: {game.isGameOver() === true ? 'Game Over' : 'Game Ongoing'}</Text>
           </CardBody>
           <Divider />
