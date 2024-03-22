@@ -31,7 +31,7 @@ export default function Home() {
                 <Box w='35%' ml={6} display='flex' alignItems='center'>
                     <Box bg='white' boxShadow='md' rounded='lg' h={250} w={450} p={2} display='flex' justifyContent='center' alignItems='center'>
                         <Box>
-                            <Text fontSize='2xl' fontWeight='bold'>Choose Difficulty</Text>
+                            <Text fontSize='3xl' fontWeight='bold'>Choose Difficulty</Text>
                             <Stack direction='row' mt={4}>
                                 <Button onClick={() => handleLevel('easy')} variant={level === 'easy' ? 'solid' : 'outline'} colorScheme='green' w={20}>Easy</Button>
                                 <Button onClick={() => handleLevel('medium')} variant={level === 'medium' ? 'solid' : 'outline'} colorScheme='yellow' w={20}>Medium</Button>
