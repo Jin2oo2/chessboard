@@ -86,11 +86,12 @@ function Game() {
 
         <Card w={400}>
           <CardHeader>
-            <Heading size='lg'>Game Data</Heading>
+            <Heading size='lg'>Game Info</Heading>
           </CardHeader>
           <CardBody>
             <Text fontSize='lg'>{game.turn() === 'b' ? 'BLACK' : 'WHITE'} PLAYING</Text>
             <Text fontSize='lg'>Difficulty: Random</Text>
+            <Text fontSize='lg'>State: {game.isGameOver() === true ? 'Game Over' : 'Game Ongoing'}</Text>
           </CardBody>
           <Divider />
           <CardFooter>
