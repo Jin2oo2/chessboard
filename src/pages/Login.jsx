@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
 import { Box, Button, Center, Heading, Text, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import {
     FormControl,
@@ -10,8 +11,28 @@ import {
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 
 export default function Login() {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
     const [show, setShow] = useState(false)
+    const navigate = useNavigate()
     const handleClick = () => setShow(!show)
+
+    async function handleLogin(e) {
+        e.preventDefault()
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/login/', {
+                username: username,
+                password: password
+            })
+            const user = await response.data
+            localStorage.setItem('user', JSON.stringify(user))
+            console.log(user)
+            navigate('/')
+        } catch (error) {
+            console.log(error)
+            alert(error.response.data.detail)
+        }
+    }
 
   return (
     <>
@@ -24,16 +45,16 @@ export default function Login() {
                     
                     <Box m={5}>
                         <form action="" >
-                            <Input mb={4} variant='flushed' placeholder='Enter username'/>
+                            <Input mb={4} variant='flushed' value={username} placeholder='Enter username' onChange={(e) => setUsername(e.target.value)}/>
                             
                             <InputGroup mb={4}>
-                                <Input variant='flushed' placeholder='Enter password' type={show ? 'text' : 'password'}/>
+                                <Input variant='flushed' value={password} placeholder='Enter password' type={show ? 'text' : 'password'} onChange={(e) => setPassword(e.target.value)}/>
                                 <InputRightElement>  
                                     {show ? <ViewIcon onClick={handleClick} /> : <ViewOffIcon onClick={handleClick} />}   
                                 </InputRightElement>
                             </InputGroup>
 
-                            <Button type='submit' w={300} colorScheme='cyan'>Login</Button>
+                            <Button type='submit' onClick={handleLogin} w={300} colorScheme='cyan'>Login</Button>
                         </form>
 
                         <Text mt={3}>Not a member? <Link to='/signup'>Signup</Link></Text>
