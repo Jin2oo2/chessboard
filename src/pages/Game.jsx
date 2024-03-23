@@ -7,10 +7,8 @@ import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 function Game() {
   const [game, setGame] = useState(new Chess())
   const [playerMoved, setPlayerMoved] = useState(false);
+  const [gameProgress, setGameProgress] = useState('Ongoing')
   const level = localStorage.getItem('level')
-  console.log(`Game level: ${level}`)
-
-  console.log(game)
 
   function onBegin(piece, sourceSquare) {
     if (game.isGameOver() || game.isCheckmate() || game.isDraw()) {
@@ -30,8 +28,8 @@ function Game() {
   }
 
   function makeRandomMove() {
-    console.log("makeRandomMove run")
-    console.log(game.fen())
+    // console.log("makeRandomMove run")
+    // console.log(game.fen())
     const possibleMoves = game.moves()
     if (game.isGameOver() || possibleMoves.length === 0 || game.isCheckmate() || game.isDraw()) {
       console.log("GAME OVER")
@@ -49,7 +47,7 @@ function Game() {
         to: targetSquare,
         promotion: 'q',
       })
-      console.log(move)
+      // console.log(move)
       setPlayerMoved(true)
     } catch (error) {
       console.log(error)
@@ -58,14 +56,23 @@ function Game() {
   }
 
   useEffect(() => {
+    if (game.isGameOver()) {
+      if (game.isCheckmate()) {
+        if (game.turn() == 'b') {
+          setGameProgress('Win!')
+        } else {
+          setGameProgress('Lost...')
+        }
+      }
+      else if (game.isDraw() || game.isStalemate() || game.isThreefoldRepetition() || game.isInsufficientMaterial()) {
+        setGameProgress('Draw')
+      }
+    }
+
     if (!playerMoved) return;
     setTimeout(makeRandomMove, 500);
     setPlayerMoved(false)
   }, [game, playerMoved]);
-
-  function reset() {
-    setGame(new Chess())
-  }
 
   return (
     <>
@@ -89,11 +96,11 @@ function Game() {
           <CardBody>
             <Text fontSize='lg'>{game.turn() === 'b' ? 'BLACK' : 'WHITE'} PLAYING</Text>
             <Text fontSize='lg'>Difficulty: {level}</Text>
-            <Text fontSize='lg'>State: {game.isGameOver() === true ? 'Game Over' : 'Game Ongoing'}</Text>
+            <Text fontSize='lg'>State: {gameProgress}</Text>
           </CardBody>
           <Divider />
           <CardFooter>
-            <Button colorScheme='red' onClick={reset}>Reset</Button>
+            <Button colorScheme='red' onClick={() => setGame(new Chess())}>Reset</Button>
           </CardFooter>
         </Card>
       </Box>
