@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Box, Button, Text } from '@chakra-ui/react'
 import chess_header_icon from '/chess_header.png'
+import LoginSignupButton from './LoginSignupButton'
 
 export default function Header() {
   return (
@@ -13,15 +14,7 @@ export default function Header() {
           </Box>
         </Link>
         
-        
-        <div id='rightside'>
-          <Link to='/login'>
-            <Button mr={6} variant='ghost' colorScheme='whatsapp'>Login</Button>
-          </Link>
-          <Link to='/signup'>
-            <Button mr={2} variant='outline' colorScheme='whatsapp'>Sign Up</Button>
-          </Link>
-        </div>
+        <LoginSignupButton />
       </Box>
     </>
   )
