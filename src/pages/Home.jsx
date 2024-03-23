@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Box, Button, Heading, Text, Stack } from '@chakra-ui/react'
+import Greeting from '../components/Greeting'
 
 export default function Home() {
+    const [user, setUser] = useState(null)
     const [level, setLevel] = useState(null)
 
     function handleLevel(level) {
@@ -13,24 +15,34 @@ export default function Home() {
         localStorage.setItem('level', level)
     }
 
+    useEffect(() => {
+        const user = localStorage.getItem('user')
+        if (!user) return
+        setUser(JSON.parse(user))
+    }, [])
+
     return (
         <>
             <Box display='flex' justifyContent='center' h={600} bg=''>
                 <Box w='50%'  display='flex' alignItems='center'>
                     <Box>
-                        <Heading
-                            size='4xl'
-                            bgGradient='linear(to-l, #7928CA, #FF0080)'
-                            bgClip='text'
-                            fontWeight='extrabold'
-                            mb={4}
-                        >
-                            ChessMaster
-                        </Heading>
-                        <Text as='i' fontSize='3xl' fontWeight='bold'>
-                            Welcome to the world of chess mastery. Sharpen your mind and pit your tactics against our computer opponent for a challenging game!
-                        </Text>
+                        {!user ? <></> : <Greeting username={user.username} />}
+                        <Box>
+                            <Heading
+                                size='4xl'
+                                bgGradient='linear(to-l, #7928CA, #FF0080)'
+                                bgClip='text'
+                                fontWeight='extrabold'
+                                mb={4}
+                            >
+                                ChessMaster
+                            </Heading>
+                            <Text as='i' fontSize='3xl' fontWeight='bold'>
+                                Welcome to the world of chess mastery. Sharpen your mind and pit your tactics against our computer opponent for a challenging game!
+                            </Text>
+                        </Box>
                     </Box>
+                   
                 </Box>
 
                 <Box w='35%' ml={6} display='flex' alignItems='center'>
