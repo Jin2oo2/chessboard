@@ -26,12 +26,13 @@ export default function Login() {
             })
             const user = await response.data.user
             const jwt_token = await response.data.jwt_token
-            console.log('user', user)
-            console.log('token', jwt_token)
+    
             localStorage.clear()
             localStorage.setItem('user', JSON.stringify(user))
             localStorage.setItem('jwt_token', jwt_token)
+            
             axios.defaults.headers.common['Authorization'] = `Bearer ${jwt_token.access}`
+
             navigate('/')
             window.location.reload();
         } catch (error) {

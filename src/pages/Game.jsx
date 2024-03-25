@@ -3,17 +3,36 @@ import { Chess } from "chess.js"
 import { useState, useEffect } from "react"
 import { Box, Button, Heading, Text, Divider } from '@chakra-ui/react'
 import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from '@chakra-ui/react'
 
 function Game() {
   const [game, setGame] = useState(new Chess())
   const [playerMoved, setPlayerMoved] = useState(false);
   const [gameProgress, setGameProgress] = useState('Ongoing')
+  const statusColour = () => {
+    if (gameProgress === 'Win!') return 'green'
+    else if (gameProgress === 'Lost...') return 'red'
+    else return 'grey'
+  }
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const level = localStorage.getItem('level')
 
-  function onBegin(piece, sourceSquare) {
-    if (game.isGameOver() || game.isCheckmate() || game.isDraw()) {
+  function onBegin() {
+    if (game.isGameOver()) {
       return false
     }
+    // if (game.isGameOver() || game.isCheckmate() || game.isDraw()) {
+    //   return false
+    // }
   }
 
   function isDraggablePiece(pieceData) {
@@ -55,6 +74,11 @@ function Game() {
     } 
   }
 
+  function reset() {
+    setGame(new Chess())
+    setGameProgress('Ongoing')
+  }
+
   useEffect(() => {
     if (game.isGameOver()) {
       if (game.isCheckmate()) {
@@ -67,6 +91,9 @@ function Game() {
       else if (game.isDraw() || game.isStalemate() || game.isThreefoldRepetition() || game.isInsufficientMaterial()) {
         setGameProgress('Draw')
       }
+      
+      // Open modal when the game is finished
+      onOpen()
     }
 
     if (!playerMoved) return;
@@ -76,6 +103,22 @@ function Game() {
 
   return (
     <>
+      <Modal isOpen={isOpen} onClose={onClose} >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Game result</ModalHeader> 
+          <ModalCloseButton />
+
+          <ModalBody>
+            <Text fontSize='4xl' fontWeight='bolder' color={statusColour}>{gameProgress}</Text>
+          </ModalBody>
+
+          <ModalFooter>
+              <Button colorScheme='blue' onClick={onClose}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
       <Box display='flex' justifyContent='space-around' alignItems='center'>
         <Box>
           <Chessboard
@@ -100,11 +143,10 @@ function Game() {
           </CardBody>
           <Divider />
           <CardFooter>
-            <Button colorScheme='red' onClick={() => setGame(new Chess())}>Reset</Button>
+            <Button colorScheme='red' onClick={reset}>Reset</Button>
           </CardFooter>
         </Card>
       </Box>
-      
     </>
   )
 }

@@ -38,8 +38,8 @@ export default function Menu() {
         try {
             localStorage.clear()
             onClose()
-            window.location.reload();
             navigate('/')
+            window.location.reload();
             console.log('Logout successful')
         } catch (error) {
             console.log(error)
