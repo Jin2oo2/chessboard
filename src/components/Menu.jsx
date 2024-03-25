@@ -1,6 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Stack, Button, Text } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
+import { Stack, Button } from '@chakra-ui/react'
 import {
     Drawer,
     DrawerBody,
@@ -14,8 +15,37 @@ import {
 import { HamburgerIcon } from '@chakra-ui/icons'
 
 export default function Menu() {
+    const [user, setUser] = useState(null)
+    const [token, setToken] = useState(null)
+    const navigate = useNavigate()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
+
+    useEffect(() => {
+        const user = localStorage.getItem('user')
+        const token = localStorage.getItem('jwt_token')
+
+        if (!user) return
+        setUser(JSON.parse(user))
+
+        if (!token) return
+        setToken(token)
+
+    }, [user, token])
+
+    async function handleLogout(e) {
+        e.preventDefault()
+        try {
+            localStorage.clear()
+            onClose()
+            window.location.reload();
+            navigate('/')
+            console.log('Logout successful')
+        } catch (error) {
+            console.log(error)
+            alert(error)
+        }
+    } 
 
     return (
         <>
@@ -36,11 +66,8 @@ export default function Menu() {
                             <Link to='/profile' onClick={onClose}>
                                 <Button w='100%' size='lg' colorScheme='black' variant='link'>Profile</Button>
                             </Link>
-                            <Button w='100%' size='lg' colorScheme='red' variant='link' >Logout</Button>
+                            <Button w='100%' size='lg' colorScheme='red' variant='link' onClick={handleLogout} >Logout</Button>
                         </Stack>
-                        
-                        
-                        
                     </DrawerBody>
 
                 </DrawerContent>

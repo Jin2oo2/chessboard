@@ -8,11 +8,13 @@ import Menu from './Menu'
 
 export default function Header() {
   const [user, setUser] = useState(null)
+  
   useEffect(() => {
     const user = localStorage.getItem('user')
     if (!user) return
     setUser(JSON.parse(user))
   }, [])
+
   return (
     <>
       <Box bg="white" boxShadow="md" p={3} mb={5} display="flex" justifyContent="space-between">
