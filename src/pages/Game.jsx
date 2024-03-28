@@ -30,9 +30,6 @@ function Game() {
     if (game.isGameOver()) {
       return false
     }
-    // if (game.isGameOver() || game.isCheckmate() || game.isDraw()) {
-    //   return false
-    // }
   }
 
   function isDraggablePiece(pieceData) {
