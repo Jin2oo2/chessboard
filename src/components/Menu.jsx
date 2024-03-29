@@ -31,7 +31,7 @@ export default function Menu() {
         if (!token) return
         setToken(token)
 
-    }, [user, token])
+    }, [])
 
     async function handleLogout(e) {
         e.preventDefault()

@@ -14,14 +14,14 @@ import {
 } from '@chakra-ui/react'
 
 export default function Profile() {
-  const [user, setUser] = useState(null)
-  const [records, setRecords] = useState([])
+  // const [user, setUser] = useState(null)
+  // const [records, setRecords] = useState([])
 
-  useEffect(() => {
-    const user = localStorage.getItem('user')
-        if (!user) return
-        setUser(JSON.parse(user))
-  }, [])
+  // useEffect(() => {
+  //   const user = localStorage.getItem('user')
+  //       if (!user) return
+  //       setUser(JSON.parse(user))
+  // }, [])
 
   return (
     <>
