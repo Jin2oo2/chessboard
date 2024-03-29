@@ -5,8 +5,14 @@ import axios from 'axios'
 const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null)
-    const [jwt, setJwt] = useState(null)
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem('user')
+        return storedUser ? JSON.parse(storedUser) : null
+    })
+    const [jwt, setJwt] = useState(() => {
+        const storedJwt = localStorage.getItem('jwt')
+        return storedJwt ? JSON.parse(storedJwt) : null
+    })
 
     const navigate = useNavigate()
 
@@ -21,13 +27,12 @@ export function AuthProvider({ children }) {
             const jwt_token = await response.data.jwt_token
             setUser(user)
             setJwt(jwt_token)
-            console.log('user', user)
-            console.log('jwt', jwt_token)
-            console.log('Login succuessful!')
     
-            // localStorage.clear()
-            // localStorage.setItem('user', JSON.stringify(user))
-            // localStorage.setItem('jwt_token', jwt_token)
+            localStorage.clear()
+            localStorage.setItem('user', JSON.stringify(user))
+            localStorage.setItem('jwt', JSON.stringify(jwt_token))
+
+            console.log('Login succuessful!')
             
             axios.defaults.headers.common['Authorization'] = `Bearer ${jwt_token.access}`
 
@@ -43,8 +48,9 @@ export function AuthProvider({ children }) {
         try {
             setUser(null)
             setJwt(null)
+            localStorage.clear()
             navigate('/')
-            console.log('Logout uccessful')
+            console.log('Logout successful')
         } catch (error) {
             console.log(error)
             alert(error)

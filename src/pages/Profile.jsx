@@ -18,8 +18,6 @@ export default function Profile() {
   const { user } = useAuth()
   // const [records, setRecords] = useState([])
 
-  console.log(`user: ${user.username}`)
-
   return (
     <>
       <Box bg='black' h={500} display='flex' justifyContent='center' alignItems='center'>
