@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 import { Box, Button, Text, Divider } from '@chakra-ui/react'
 import { Avatar, AvatarBadge } from '@chakra-ui/react'
 import {
@@ -16,7 +17,42 @@ import { useAuth } from '../AuthContext'
 
 export default function Profile() {
   const { user } = useAuth()
-  // const [records, setRecords] = useState([])
+  const [records, setRecords] = useState(null)
+
+  const getGames = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/user/${user.id}/games`)
+      console.log(response.data)
+      setRecords(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getGames()
+  }, [])
+
+  const countStats = (result) => {
+    let count = 0
+    for (let i = 0; i < records.length; i++) {
+      if (records[i].result === result) count++
+    }
+    return count
+  }
+
+
+  const formatDateTime = (datetimeString) => {
+    const dateTime = new Date(datetimeString);
+  
+    const year = dateTime.getFullYear();
+    const month = String(dateTime.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+    const day = String(dateTime.getDate()).padStart(2, '0');
+    const hours = String(dateTime.getHours()).padStart(2, '0');
+    const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+    
+    return `${year}/${month}/${day} ${hours}:${minutes}`;
+  }
 
   return (
     <>
@@ -27,7 +63,7 @@ export default function Profile() {
               <Avatar name={user.username} src={user.avatar} size='xl' mb={5}/>
               <Box ml={5}>
                 <Text fontSize='2xl' fontWeight='bolder' >{user.username}</Text>
-                <Text color='grey' >Joined on {user.date_joined}</Text>
+                <Text color='grey' >Joined on {formatDateTime(user.date_joined).split(' ')[0]}</Text>
               </Box>
             </Box>
             
@@ -37,9 +73,9 @@ export default function Profile() {
               <Box>
                 <Text fontWeight='bold'>STATS</Text>
                 <Box>
-                  <Text color='green'>WIN 6</Text>
-                  <Text color='red'>LOSE 3</Text>
-                  <Text color='grey'>DRAW 2</Text>
+                  <Text color='green'>WIN {countStats('win')}</Text>
+                  <Text color='red'>LOSE {countStats('lose')}</Text>
+                  <Text color='grey'>DRAW {countStats('draw')}</Text>
                 </Box>
               </Box> 
             </Box>
