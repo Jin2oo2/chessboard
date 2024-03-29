@@ -14,14 +14,16 @@ import {
 } from '@chakra-ui/react'
 
 export default function Profile() {
-  // const [user, setUser] = useState(null)
-  // const [records, setRecords] = useState([])
+  const [user, setUser] = useState(null)
+  const [records, setRecords] = useState([])
 
-  // useEffect(() => {
-  //   const user = localStorage.getItem('user')
-  //       if (!user) return
-  //       setUser(JSON.parse(user))
-  // }, [])
+  useEffect(() => {
+    const user = localStorage.getItem('user')
+        if (!user) return
+        setUser(JSON.parse(user))
+  }, [])
+
+  console.log('user', user)
 
   return (
     <>
@@ -29,7 +31,7 @@ export default function Profile() {
         <Box bg='white' w={550} p={10} display='flex' justifyContent='center' boxShadow='lg' borderRadius='lg'>
           <Box>
             <Box display='flex' justifyContent='center' alignItems='center'>
-              <Avatar name='John Smith' src='https://bit.ly/broken-link' size='xl' mb={5}/>
+              <Avatar name='John Smith' src='' size='xl' mb={5}/>
               <Box ml={5}>
                 <Text fontSize='2xl' fontWeight='bolder' >John Smith</Text>
                 <Text color='grey' >Joined on 2023/08/15</Text>
