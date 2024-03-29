@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Box, Button, Text, Divider } from '@chakra-ui/react'
 import { Avatar, AvatarBadge } from '@chakra-ui/react'
@@ -18,6 +19,7 @@ import { useAuth } from '../AuthContext'
 export default function Profile() {
   const { user } = useAuth()
   const [records, setRecords] = useState(null)
+  const navigate = useNavigate()
 
   const getGames = async () => {
     try {
@@ -30,12 +32,13 @@ export default function Profile() {
   }
 
   useEffect(() => {
+    if (!user) return
     getGames()
-  }, [])
+  }, [user])
 
   const countStats = (result) => {
     let count = 0
-    for (let i = 0; i < records.length; i++) {
+    for (let i = 0; i < (records || []).length; i++) {
       if (records[i].result === result) count++
     }
     return count
@@ -54,10 +57,17 @@ export default function Profile() {
     return `${year}/${month}/${day} ${hours}:${minutes}`;
   }
 
+  const notLoggedIn = () => {
+    return (
+      <>You are not logged in</>
+    )
+  }
+
   return (
     <>
-      <Box bg='black' h={500} display='flex' justifyContent='center' alignItems='center'>
+      <Box h={500} display='flex' justifyContent='center' alignItems='center'>
         <Box bg='white' w={550} p={10} display='flex' justifyContent='center' boxShadow='lg' borderRadius='lg'>
+        {user ? (
           <Box>
             <Box display='flex' justifyContent='center' alignItems='center'>
               <Avatar name={user.username} src={user.avatar} size='xl' mb={5}/>
@@ -115,6 +125,8 @@ export default function Profile() {
               </Table>
             </TableContainer> */}
           </Box>
+        ) : (<Text>You are not logged in</Text>)}
+          
         </Box>
       </Box>
     </>
