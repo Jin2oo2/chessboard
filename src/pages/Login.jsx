@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { useAuth } from '../AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
 import { Box, Button, Center, Heading, Text, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import {
@@ -14,31 +15,11 @@ export default function Login() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [show, setShow] = useState(false)
-    const navigate = useNavigate()
+    const { handleLogin } = useAuth()
     const handleClick = () => setShow(!show)
 
-    async function handleLogin(e) {
-        e.preventDefault()
-        try {
-            const response = await axios.post('http://127.0.0.1:8000/api/login/', {
-                username: username,
-                password: password
-            })
-            const user = await response.data.user
-            const jwt_token = await response.data.jwt_token
-    
-            localStorage.clear()
-            localStorage.setItem('user', JSON.stringify(user))
-            localStorage.setItem('jwt_token', jwt_token)
-            
-            axios.defaults.headers.common['Authorization'] = `Bearer ${jwt_token.access}`
-
-            navigate('/')
-            window.location.reload();
-        } catch (error) {
-            console.log(error)
-            alert(error.response.data.detail)
-        }
+    const handleSubmit = (e) => {
+        handleLogin(e, username, password)
     }
 
   return (
@@ -61,7 +42,7 @@ export default function Login() {
                                 </InputRightElement>
                             </InputGroup>
 
-                            <Button type='submit' onClick={handleLogin} w={300} colorScheme='cyan'>Login</Button>
+                            <Button type='submit' onClick={handleSubmit} w={300} colorScheme='cyan'>Login</Button>
                         </form>
 
                         <Text mt={3}>Not a member? <Link to='/signup'>Signup</Link></Text>

@@ -4,16 +4,11 @@ import { Box, Button, Text } from '@chakra-ui/react'
 import chess_header_icon from '/chess_header.png'
 import LoginSignupButton from './LoginSignupButton'
 import Menu from './Menu'
+import { useAuth } from '../AuthContext'
 
 
 export default function Header() {
-  const [user, setUser] = useState(null)
-  
-  useEffect(() => {
-    const user = localStorage.getItem('user')
-    if (!user) return
-    setUser(JSON.parse(user))
-  }, [])
+  const { user } = useAuth()
 
   return (
     <>

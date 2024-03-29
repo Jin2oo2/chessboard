@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import {  useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Box, Button, Heading, Text, Stack } from '@chakra-ui/react'
 import Greeting from '../components/Greeting'
+import { useAuth } from '../AuthContext'
 
 export default function Home() {
-    const [user, setUser] = useState(null)
+    const { user } = useAuth()
     const [level, setLevel] = useState(null)
 
     function handleLevel(level) {
@@ -14,12 +15,6 @@ export default function Home() {
     function saveLevel() {
         localStorage.setItem('level', level)
     }
-
-    useEffect(() => {
-        const user = localStorage.getItem('user')
-        if (!user) return
-        setUser(JSON.parse(user))
-    }, [])
 
     return (
         <>

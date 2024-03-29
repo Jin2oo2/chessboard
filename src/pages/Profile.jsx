@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Box, Button, Text, Divider } from '@chakra-ui/react'
 import { Avatar, AvatarBadge } from '@chakra-ui/react'
 import {
@@ -12,18 +12,13 @@ import {
   TableCaption,
   TableContainer,
 } from '@chakra-ui/react'
+import { useAuth } from '../AuthContext'
 
 export default function Profile() {
-  const [user, setUser] = useState(null)
-  const [records, setRecords] = useState([])
+  const { user } = useAuth()
+  // const [records, setRecords] = useState([])
 
-  useEffect(() => {
-    const user = localStorage.getItem('user')
-        if (!user) return
-        setUser(JSON.parse(user))
-  }, [])
-
-  console.log('user', user)
+  console.log(`user: ${user.username}`)
 
   return (
     <>
@@ -31,10 +26,10 @@ export default function Profile() {
         <Box bg='white' w={550} p={10} display='flex' justifyContent='center' boxShadow='lg' borderRadius='lg'>
           <Box>
             <Box display='flex' justifyContent='center' alignItems='center'>
-              <Avatar name='John Smith' src='' size='xl' mb={5}/>
+              <Avatar name={user.username} src={user.avatar} size='xl' mb={5}/>
               <Box ml={5}>
-                <Text fontSize='2xl' fontWeight='bolder' >John Smith</Text>
-                <Text color='grey' >Joined on 2023/08/15</Text>
+                <Text fontSize='2xl' fontWeight='bolder' >{user.username}</Text>
+                <Text color='grey' >Joined on {user.date_joined}</Text>
               </Box>
             </Box>
             
