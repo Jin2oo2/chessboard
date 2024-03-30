@@ -24,17 +24,17 @@ export function AuthProvider({ children }) {
                 password: password
             })
             const user = await response.data.user
-            const jwt_token = await response.data.jwt_token
+            const jwt = await response.data.jwt_token
             setUser(user)
-            setJwt(jwt_token)
+            setJwt(jwt)
     
             localStorage.clear()
             localStorage.setItem('user', JSON.stringify(user))
-            localStorage.setItem('jwt', JSON.stringify(jwt_token))
+            localStorage.setItem('jwt', JSON.stringify(jwt))
 
             console.log('Login succuessful!')
             
-            axios.defaults.headers.common['Authorization'] = `Bearer ${jwt_token.access}`
+            axios.defaults.headers.common['Authorization'] = `Bearer ${jwt.access}`
 
             navigate('/')
         } catch (error) {

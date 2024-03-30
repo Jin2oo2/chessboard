@@ -1,6 +1,8 @@
 import { Chessboard } from "react-chessboard"
 import { Chess } from "chess.js"
 import { useState, useEffect } from "react"
+import { useAuth } from "../AuthContext"
+import axios from 'axios'
 import { Box, Button, Heading, Text, Divider } from '@chakra-ui/react'
 import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 import {
@@ -17,14 +19,56 @@ import {
 function Game() {
   const [game, setGame] = useState(new Chess())
   const [playerMoved, setPlayerMoved] = useState(false);
+  const level = localStorage.getItem('level')
   const [gameProgress, setGameProgress] = useState('Ongoing')
+  const [gameResultPosted, setGameResultPosted] = useState(false);
   const statusColour = () => {
-    if (gameProgress === 'Win!') return 'green'
-    else if (gameProgress === 'Lost...') return 'red'
+    if (gameProgress === 'win') return 'green'
+    else if (gameProgress === 'lose') return 'red'
     else return 'grey'
   }
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const level = localStorage.getItem('level')
+  const { user } = useAuth()  
+
+  // POST new game to backend API
+  async function postNewGame() {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/newgame/', {
+        "result": gameProgress,
+        "level": level,
+      }, {
+        headers: {
+          "Authorization": `Bearer ${JSON.parse(localStorage.getItem('jwt')).access}`
+        }
+      })
+      await setGameResultPosted(true)
+    } catch (error) {
+      console.log(error)
+      if (error.response.status === 401) {
+        const refreshToken = JSON.parse(localStorage.getItem('jwt')).refresh
+        console.log('refreshToken', refreshToken)
+        const response = await axios.post('http://127.0.0.1:8000/api/token/refresh/', {
+          "refresh": refreshToken
+        })
+        const newAceessToken = response.data.access
+        console.log('newAccessToken', newAceessToken)
+        const jwt = JSON.parse(localStorage.getItem('jwt'))
+        jwt.access = newAceessToken
+        localStorage.setItem('jwt', JSON.stringify(jwt))
+
+        const response_try = await axios.post('http://127.0.0.1:8000/api/newgame/', {
+          "result": gameProgress,
+          "level": level
+        }, {
+          headers: {
+            "Authorization": `Bearer ${newAceessToken}`
+          }
+        })
+        console.log(response_try)
+        await setGameResultPosted(true)
+      }
+    }
+  }
 
   function onBegin() {
     if (game.isGameOver()) {
@@ -44,8 +88,6 @@ function Game() {
   }
 
   function makeRandomMove() {
-    // console.log("makeRandomMove run")
-    // console.log(game.fen())
     const possibleMoves = game.moves()
     if (game.isGameOver() || possibleMoves.length === 0 || game.isCheckmate() || game.isDraw()) {
       console.log("GAME OVER")
@@ -63,7 +105,6 @@ function Game() {
         to: targetSquare,
         promotion: 'q',
       })
-      // console.log(move)
       setPlayerMoved(true)
     } catch (error) {
       console.log(error)
@@ -80,23 +121,31 @@ function Game() {
     if (game.isGameOver()) {
       if (game.isCheckmate()) {
         if (game.turn() == 'b') {
-          setGameProgress('Win!')
+          setGameProgress('win')
         } else {
-          setGameProgress('Lost...')
+          setGameProgress('lose')
         }
       }
       else if (game.isDraw() || game.isStalemate() || game.isThreefoldRepetition() || game.isInsufficientMaterial()) {
-        setGameProgress('Draw')
+        setGameProgress('draw')
       }
       
       // Open modal when the game is finished
       onOpen()
+      // POST game result for logged in a user when the game is finished
+      if (user && !gameResultPosted && gameProgress !== 'Ongoing') {
+        console.log("postNewGame API call")
+        postNewGame(gameProgress)
+      }
     }
 
     if (!playerMoved) return;
     setTimeout(makeRandomMove, 500);
     setPlayerMoved(false)
-  }, [game, playerMoved]);
+  }, [game, playerMoved, gameProgress]);
+
+  
+  
 
   return (
     <>
