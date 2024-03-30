@@ -126,7 +126,6 @@ export default function Profile() {
             </TableContainer> */}
           </Box>
         ) : (<Text>You are not logged in</Text>)}
-          
         </Box>
       </Box>
     </>
