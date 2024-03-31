@@ -1,8 +1,20 @@
-# React + Vite
+# Chess Web App
+This is a full stack react chess web application intergrated with Django REST framework.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img width="1440" alt="chessboard" src="https://github.com/Jin2oo2/chessboard/assets/87120791/332ac4d2-b719-4e02-a627-618454e1827b">
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+react: 18.2.0\
+chess.js: 1.0.0-beta.8\
+react-chessboard: 4.5.0\
+react-router-dom: 6.22.3\
+@chakra-ui/icons: 2.1.1\
+@chakra-ui/react: 2.8.2\
+
+## Features
+- User authentication (JWT)
+  - Register
+  - Login/Logout
+- Different levels of computer from easy to hard
+- Saves the past games' history
