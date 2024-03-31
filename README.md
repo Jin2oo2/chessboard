@@ -1,6 +1,8 @@
 # Chess Web App
 This is a full stack react chess web application intergrated with Django REST framework.
 
+To play the game [Chess App](https://chessmaster-sooty.vercel.app/)
+
 <img width="1440" alt="chessboard" src="https://github.com/Jin2oo2/chessboard/assets/87120791/332ac4d2-b719-4e02-a627-618454e1827b">
 
 
