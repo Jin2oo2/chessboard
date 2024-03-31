@@ -134,7 +134,6 @@ function Game() {
       onOpen()
       // POST game result for logged in a user when the game is finished
       if (user && !gameResultPosted && gameProgress !== 'Ongoing') {
-        console.log("postNewGame API call")
         postNewGame(gameProgress)
       }
     }

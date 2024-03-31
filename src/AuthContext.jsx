@@ -34,7 +34,7 @@ export function AuthProvider({ children }) {
 
             console.log('Login succuessful!')
             
-            axios.defaults.headers.common['Authorization'] = `Bearer ${jwt.access}`
+            // axios.defaults.headers.common['Authorization'] = `Bearer ${jwt.access}`
 
             navigate('/')
         } catch (error) {
