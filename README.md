@@ -12,8 +12,8 @@ react: 18.2.0\
 chess.js: 1.0.0-beta.8\
 react-chessboard: 4.5.0\
 react-router-dom: 6.22.3\
-@chakra-ui/icons: 2.1.1\
-@chakra-ui/react: 2.8.2\
+chakra-ui/icons: 2.1.1\
+chakra-ui/react: 2.8.2
 
 ## Features
 - User authentication (JWT)
