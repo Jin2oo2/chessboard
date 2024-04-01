@@ -1,5 +1,6 @@
 # Chess Web App
-This is a full stack react chess web application intergrated with Django REST framework.
+This is a full stack react chess web application intergrated with Django REST framework.\
+[Backend Github Repositry](https://github.com/Jin2oo2/chess-backend)
 
 To play the game [Chess App](https://chessmaster-sooty.vercel.app/)
 
