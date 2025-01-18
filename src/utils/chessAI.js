@@ -1,5 +1,13 @@
 import { Chess } from "chess.js"
 
+function orderMoves(moves) {
+  return moves.sort((a, b) => {
+    const captureA = a.includes("x") ? 1 : 0
+    const captureB = b.includes("x") ? 1 : 0
+    return captureB - captureA; // Moves with captures first
+  })
+}
+
 function evaluateBoard(fen) {
   const pieceValues = {
     p: -1, n: -3, b: -3, r: -5, q: -9, k: -1000, // black piece
@@ -36,7 +44,8 @@ function minmax(game, depth, isMaxmizing, alpha, beta) {
   let bestScore = isMaxmizing ? -Infinity : Infinity
   
   if (isMaxmizing) {  
-    for (const move of game.moves()) {
+    const moves = orderMoves(game.moves())
+    for (const move of moves) {
       game.move(move)
       const result = minmax(game, depth - 1, !isMaxmizing, alpha, beta)
       game.undo()
@@ -50,7 +59,8 @@ function minmax(game, depth, isMaxmizing, alpha, beta) {
       if (alpha >= beta) break
     }
   } else {
-    for (const move of game.moves()) {
+    const moves = orderMoves(game.moves())
+    for (const move of moves) {
       game.move(move)
       const result = minmax(game, depth - 1, !isMaxmizing, alpha, beta)
       game.undo()

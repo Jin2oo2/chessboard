@@ -16,6 +16,11 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 
+const depthLevel = {
+  medium: 2,
+  hard: 4
+}
+
 function Game() {
   const [game, setGame] = useState(new Chess())
   const [playerMoved, setPlayerMoved] = useState(false);
@@ -98,6 +103,24 @@ function Game() {
     makeAMove(possibleMoves[randomIndex])
   }
 
+  // Use web workor to generate best move in background thread
+  async function handleGetBestMove(fen, depth) {
+    return new Promise((resolve, reject) => {
+      const worker = new Worker(new URL("../utils/chessAI.js", import.meta.url), { type: "module" })
+      worker.postMessage([fen, depth])
+  
+      worker.onmessage = (event) => {
+        resolve(event.data)
+        worker.terminate()
+      }
+  
+      worker.onerror = (error) => {
+        reject(error)
+        worker.terminate()
+      }
+    })
+  }
+
   function onDrop(sourceSquare, targetSquare) {
     try {
       const move = makeAMove({
@@ -139,12 +162,23 @@ function Game() {
     }
 
     if (!playerMoved) return;
-    setTimeout(makeRandomMove, 500);
+    const makeAIMove = async () => {
+      if (level === "easy") {
+        setTimeout(makeRandomMove, 500);
+      } else {
+        const depth = depthLevel[level]
+        try {
+          const bestMove = await handleGetBestMove(game.fen(), depth)
+          makeAMove(bestMove)
+        } catch (error) {
+          console.error("AI Move Error:", error)
+        }
+      }
+    }
+    makeAIMove()
     setPlayerMoved(false)
   }, [game, playerMoved, gameProgress]);
 
-  
-  
 
   return (
     <>
