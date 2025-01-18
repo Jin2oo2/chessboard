@@ -11,12 +11,6 @@ function evaluateBoard(fen) {
     .reduce((total, piece) => total + (pieceValues[piece] || 0), 0);
 }
 
-const fen = "rnbqkbnr/pppp3p/4p3/8/8/5P2/6PP/2rQKBrR w KQkq - 0 1"
-const fen1 = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-const fen2 = "rnbqkbnr/1ppppppp/8/8/8/8/8/1qBQK3 w KQkq - 0 1"
-const fen3 = "4k3/8/8/8/8/8/8/1QB1K3 b KQkq - 0 1"
-
-
 function minmax(game, depth, isMaxmizing, alpha, beta) {
   if (depth === 0 || game.isGameOver()) {
     if (game.isGameOver()) {
@@ -77,21 +71,11 @@ function minmax(game, depth, isMaxmizing, alpha, beta) {
   }
 }
 
-export function getBestMove(fen, depth) {
-  return new Promise((resolve, reject) => {
-    try {
-      const game = new Chess(fen)
-      const result = minmax(game, depth, true, -Infinity, Infinity)
-      resolve(result.move)
-    } catch (error) {
-      reject(error)
-    }
-  })
+onmessage = function (e) {
+  const fen = e.data[0]
+  const depth = e.data[1]
+  const game = new Chess(fen)
+  const result = minmax(game, depth, false, -Infinity, Infinity)
+  console.log("finished running minmax: ", result.move)
+  postMessage(result.move)
 }
-
-async function handleGetBestMove(fen, depth) {
-  const move = await getBestMove(fen, depth)
-  console.log(move)
-}
-
-handleGetBestMove(fen2, 5)
